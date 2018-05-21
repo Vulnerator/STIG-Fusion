@@ -1,0 +1,293 @@
+﻿<Controls:MetroWindow x:Class="STIG_Fusion.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:vm="clr-namespace:STIG_Fusion.ViewModel"
+                      Title="STIG Fusion" 
+                      Height="340" 
+                      Width="897"
+                      DataContext="{DynamicResource MainWindowViewModel}"
+                      GlowBrush="{DynamicResource AccentColorBrush}" 
+                      ResizeMode="CanMinimize"
+                      ShowIconOnTitleBar="True" 
+                      Icon="/STIG Fusion;component/Resources/FusionIcon.ico">
+
+    <Controls:MetroWindow.Resources>
+        <vm:MainWindowViewModel x:Key="MainWindowViewModel" />
+    </Controls:MetroWindow.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28*" />
+            <RowDefinition Height="21*" />
+            <RowDefinition Height="28*" />
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="28*" />
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="28*" />
+            <RowDefinition Height="33*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="86*" />
+            <ColumnDefinition Width="211*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel HorizontalAlignment="Left" 
+                    Height="28" 
+                    VerticalAlignment="Top" 
+                    Width="236" 
+                    Margin="10,1,0,0" Grid.Row="2">
+            <Label Name="lbCurrent" 
+                   Content="Current STIG Aritfact"
+                   Style="{StaticResource styleSecondLevelHeader}"/>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Left" 
+                    Height="32" 
+                    VerticalAlignment="Top" 
+                    Width="236" 
+                    Margin="10,62,0,0" Grid.Row="3" Grid.RowSpan="2">
+            <Label Name="lbUpdated" 
+                   Content="Updated STIG Artifact"
+                   Style="{StaticResource styleSecondLevelHeader}"/>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Left" 
+                    Height="32" 
+                    VerticalAlignment="Top" 
+                    Width="236" 
+                    Margin="10,0,0,0" Grid.Row="6">
+            <Label Content="Generate"
+                   Style="{StaticResource styleSecondLevelHeader}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" 
+                    Height="238" 
+                    Margin="10,0" 
+                    Grid.Row="1" 
+                    Grid.RowSpan="6" 
+                    VerticalAlignment="Top">
+            <DataGrid BorderThickness="1"
+                      BorderBrush="#FFCCCCCC"
+                      AutoGenerateColumns="False"
+                      SelectionUnit="FullRow"
+                      HorizontalGridLinesBrush="#FFCCCCCC"
+                      GridLinesVisibility="Horizontal"
+                      CanUserSortColumns="True"
+                      CanUserReorderColumns="True"
+                      CanUserResizeColumns="True"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                      Height="236"
+                      ItemsSource="{Binding VersionDeltas}" 
+                      HorizontalAlignment="Left" 
+                      Width="613">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="STIG ID"
+                		Width=".15*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding StigId}" TextTrimming="CharacterEllipsis" ToolTip="{Binding StigId}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="STIG Title"
+                		Width=".45*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding StigTitle}" TextTrimming="CharacterEllipsis" ToolTip="{Binding StigTitle}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Severity"
+                		Width=".15*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding StigSeverity}" TextTrimming="CharacterEllipsis" ToolTip="{Binding StigSeverity}"/>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Responsibility"
+                		Width=".25*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding StigResponsibility}" TextTrimming="CharacterEllipsis" ToolTip="{Binding StigResponsibility}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+        <Grid 
+              Height="55" 
+              Margin="10,0,0,0" 
+              Grid.Row="3" 
+              VerticalAlignment="Top" HorizontalAlignment="Left" Width="236">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBox Height="23" 
+                     TextWrapping="NoWrap" 
+                     Controls:TextBoxHelper.Watermark="Please select a file location"
+                     Controls:TextBoxHelper.ClearTextButton="True"
+                     Text="{Binding CurrentStig}"
+                     IsEnabled="{Binding IsEnabled}"/>
+            <Button Content="Browse" 
+                    Margin="120,0,0,-1" 
+                    HorizontalAlignment="Left" 
+                    Width="116" 
+                    Height="26"
+                    Grid.Row="1"
+                    Style="{StaticResource MetroFlatButton}"
+                    Command="{Binding OpenDialogCommand}"
+                    CommandParameter="{Binding Path=Content, ElementName=lbCurrent}"
+                    IsEnabled="{Binding IsEnabled}"/>
+        </Grid>
+
+        <Grid 
+              Height="55" 
+              Margin="12,0,0,0" 
+              Grid.Row="5" 
+              VerticalAlignment="Top" HorizontalAlignment="Left" Width="236">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBox Height="23" 
+                     TextWrapping="NoWrap" 
+                     Controls:TextBoxHelper.Watermark="Please select a file location"
+                     Controls:TextBoxHelper.ClearTextButton="True"
+                     Text="{Binding NewStig}"
+                     IsEnabled="{Binding IsEnabled}"/>
+            <Button Content="Browse" 
+                    Margin="120,1,0,0" 
+                    Height="26"
+                    Grid.Row="1"
+                    Style="{StaticResource MetroFlatButton}"
+                    Command="{Binding OpenDialogCommand}"
+                    CommandParameter="{Binding Path=Content, ElementName=lbUpdated}"
+                    IsEnabled="{Binding IsEnabled}"/>
+        </Grid>
+
+        <Grid 
+              Height="26" 
+              Margin="10,0,0,0" 
+              Grid.Row="7" 
+              VerticalAlignment="Top" HorizontalAlignment="Left" Width="236">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="29*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="Generate"
+                    Style="{StaticResource MetroFlatButton}" 
+                    Grid.Column="1"
+                    Command="{Binding GenerateButtonCommand}" 
+                    Height="26" 
+                    VerticalAlignment="Top"
+                    IsEnabled="{Binding IsEnabled}"/>
+            <Controls:ProgressRing HorizontalAlignment="Left" 
+                                   VerticalAlignment="Top" 
+                                   Height="26" 
+                                   Width="29" 
+                                   Margin="38,0,0,0"
+                                   IsActive="{Binding ProgressRingIsActive, 
+                                                UpdateSourceTrigger=PropertyChanged, 
+                                                Mode=TwoWay}"/>
+        </Grid>
+        <Separator 
+                   Margin="110,47,0,0" 
+                   RenderTransformOrigin="0.5,0.5" 
+                   Grid.ColumnSpan="2" 
+                   Grid.Row="3" HorizontalAlignment="Left" Width="298" Grid.RowSpan="2">
+            <Separator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Separator.RenderTransform>
+        </Separator>
+        <Grid Grid.Column="1" 
+              Height="32" 
+              Margin="10,0" 
+              VerticalAlignment="Top" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Content="Version Deltas"
+                   Style="{StaticResource styleSecondLevelHeader}"/>
+            <Label Content="Total Deltas:" 
+                   Grid.Column="1" 
+                   HorizontalAlignment="Right" 
+                   Margin="0,4,34,0" />
+            <Label Content="{Binding VersionDeltas.Count}" 
+                   Grid.Column="1" 
+                   Margin="0,4,0,0" 
+                   VerticalAlignment="Top" 
+                   HorizontalAlignment="Right" 
+                   Width="34" 
+                   RenderTransformOrigin="2.294,0.5"/>
+        </Grid>
+        <Grid Grid.Column="1" 
+              HorizontalAlignment="Left" 
+              Height="26" 
+              Margin="10,0,0,0" 
+              Grid.Row="7" 
+              VerticalAlignment="Top" 
+              Width="613">
+            <Button Content="Clear List" 
+                    HorizontalAlignment="Left" 
+                    Margin="497,0,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="116"
+                    Command="{Binding ClearListCommand}"
+                    IsEnabled="{Binding IsEnabled}"/>
+            <Label Content="{Binding ProgressLabel, 
+                                UpdateSourceTrigger=PropertyChanged, 
+                                Mode=TwoWay}"
+                   VerticalAlignment="Top" 
+                   Margin="0,0,242,0"/>
+            <Button Content="Export List" 
+                    HorizontalAlignment="Left" 
+                    Margin="376,0,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="116"
+                    Command="{Binding ExportListCommand}"
+                    IsEnabled="{Binding IsEnabled}"/>
+        </Grid>
+        <StackPanel HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="248" Margin="10,0,0,0">
+            <Label Content="Comparison Method"
+        		Style="{StaticResource styleSecondLevelHeader}"/>
+        </StackPanel>
+        <Grid HorizontalAlignment="Left" 
+              Height="35" 
+              Margin="10,0,0,0" 
+              Grid.Row="1" 
+              VerticalAlignment="Top" 
+              Width="248">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <RadioButton Content="Vuln Title" 
+                         HorizontalAlignment="Left" 
+                         VerticalAlignment="Top"
+                         GroupName="MethodSelection" 
+                         Grid.Column="1"
+                         IsChecked="{Binding RuleTitleIsChecked}"
+                         IsEnabled="{Binding IsEnabled}"/>
+            <RadioButton Content="Vuln ID" 
+                         HorizontalAlignment="Left" 
+                         VerticalAlignment="Top"
+                         GroupName="MethodSelection"
+                         IsChecked="{Binding RuleIdIsChecked}"
+                         IsEnabled="{Binding IsEnabled}"/>
+        </Grid>
+
+    </Grid>
+</Controls:MetroWindow>
